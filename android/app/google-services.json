@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "132202493109",
+    "project_id": "macrobank-d68f8",
+    "storage_bucket": "macrobank-d68f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132202493109:android:6c5ec7596659c4e7a63afc",
+        "android_client_info": {
+          "package_name": "com.aaronh93.macro_bank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "132202493109-up624vnaahae28d1pprbmihr8o2o99tv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0Pt2kgmaVir9-BY1rr0OQEzA4F3KWJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "132202493109-up624vnaahae28d1pprbmihr8o2o99tv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
