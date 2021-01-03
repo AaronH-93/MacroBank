@@ -1,11 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:macro_bank/components/rounded_button.dart';
 import 'package:macro_bank/models/currency_data.dart';
-import 'package:macro_bank/screens/add_currency_screen.dart';
+import 'package:macro_bank/screens/edit_currency_screen.dart';
 import 'package:macro_bank/screens/take_picture_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:macro_bank/components/alert_dialog_box.dart';
@@ -105,9 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     RoundedButton(
                       color: Colors.indigoAccent,
-                      title: 'Add Currency',
+                      title: 'Edit Currencies',
                       onPressed: () {
-                        Navigator.pushNamed(context, AddCurrencyScreen.id);
+                        Navigator.pushNamed(context, EditCurrencyScreen.id);
                       },
                     ),
                   ],

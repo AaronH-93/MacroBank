@@ -5,25 +5,25 @@ import 'package:provider/provider.dart';
 
 import 'currency_tile.dart';
 
-class CurrencyList extends StatefulWidget {
+class AddCurrencyList extends StatefulWidget {
   @override
-  _CurrencyListState createState() => _CurrencyListState();
+  _AddCurrencyListState createState() => _AddCurrencyListState();
 }
 
-class _CurrencyListState extends State<CurrencyList> {
+class _AddCurrencyListState extends State<AddCurrencyList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CurrencyData>(
       builder: (context, currencyData, child) {
-        List<Currency> potentialCurrencies = currencyData.generatePotentialCurrencies();
+        List<Currency> currencies = currencyData.currencies;
         return ListView.builder(
           itemBuilder: (context, index) {
-            final currency = potentialCurrencies[index];
+            final currency = currencies[index];
             return CurrencyTile(
               currency: currency,
             );
           },
-          itemCount: potentialCurrencies.length,
+          itemCount: currencies.length,
         );
       },
     );

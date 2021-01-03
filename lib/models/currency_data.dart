@@ -22,12 +22,12 @@ class CurrencyData extends ChangeNotifier{
     Currency('DKK', 0.0, 7.45, 'assets/images/DKK.png')
   ];
 
-  UnmodifiableListView<Currency> get currencies{
-    return UnmodifiableListView(_currencies);
+  List<Currency> get currencies{
+    return _currencies;
   }
 
-  UnmodifiableListView<Currency> get userCurrencies{
-    return UnmodifiableListView(_userCurrencies);
+  List<Currency> get userCurrencies{
+    return _userCurrencies;
   }
 
   void deleteCurrencyFromUser(Currency currency){
@@ -56,6 +56,12 @@ class CurrencyData extends ChangeNotifier{
     for(Currency currency in _userCurrencies){
       potentialCurrencies.removeWhere((element) => element.name == currency.name);
     }
+    return potentialCurrencies;
+  }
+
+  List<Currency> generatePotentialRemovableCurrencies(){
+    List<Currency> potentialCurrencies = _userCurrencies;
+    potentialCurrencies.removeWhere((element) => element.name == "Current Account");
     return potentialCurrencies;
   }
 }

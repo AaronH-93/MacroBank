@@ -8,7 +8,7 @@ import 'screens/home_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'models/currency_data.dart';
-import 'screens/add_currency_screen.dart';
+import 'screens/edit_currency_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +38,7 @@ class MacroBank extends StatelessWidget {
           RegistrationScreen.id: (context) => RegistrationScreen(),
           HomeScreen.id: (context) => HomeScreen(),
           CameraScreen.id: (context) => CameraScreen(camera: camera),
-          AddCurrencyScreen.id: (context) => AddCurrencyScreen()
+          EditCurrencyScreen.id: (context) => EditCurrencyScreen()
         },
       ),
     );
