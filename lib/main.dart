@@ -11,6 +11,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'models/pot_data.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+//A few functions of the app require the use of asynchronous functions, thus you will see the async and await keywords
+//mostly regarding Firebase or the camera.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //App comes with firebase authentication, users can register and log in to an account.

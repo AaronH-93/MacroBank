@@ -78,15 +78,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     spinner = true;
                   });
                   try {
+                    //Like the log in functionality, registration will asynchronously call firebase
+                    //and create a new user with the input details, if they are a new user and are successfully registered
+                    //they are sent to the home screen, they can then use these details to log in in future.
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
                     if (newUser != null) {
                       Navigator.pushNamed(context, HomeScreen.id);
                     }
-                    // Navigator.pushNamed(context, HomeScreen.id);
-                    // setState(() {
-                    //   spinner = false;
-                    // });
                   } catch (e) {
                     print(e);
                   }

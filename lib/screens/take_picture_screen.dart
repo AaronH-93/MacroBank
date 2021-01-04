@@ -24,6 +24,7 @@ class _CameraScreenState extends State<CameraScreen> {
   CameraController _controller;
   Future<void> _initializeControllerFuture;
 
+  //initState will initialise the _controller as the camera
   @override
   void initState() {
     super.initState();
@@ -34,6 +35,7 @@ class _CameraScreenState extends State<CameraScreen> {
     _initializeControllerFuture = _controller.initialize();
   }
 
+  //dispose will dispose the camera when its finished, to save memory.
   @override
   void dispose() {
     _controller.dispose();
@@ -58,21 +60,19 @@ class _CameraScreenState extends State<CameraScreen> {
         child: Icon(Icons.camera_alt),
         onPressed: () async {
           try {
+            //Tapping the button on the camera screen will take a picture
             await _initializeControllerFuture;
+            //result will be the path and name the image will be saved to
             String result = join((await getApplicationDocumentsDirectory()).path, '${DateTime.now()}.png');
             await _controller.takePicture(result);
+            //When a picture is taken, the user avatar is set to the picture we just took
+            //and userHasAvatar is set to true, this tells the ternary operator in the home
+            //screen class to use the new avatar.
             setState(() {
               CameraScreen.userAvatar = result;
               CameraScreen.userHasAvatar = true;
             });
             Navigator.pushNamed(context, HomeScreen.id);
-
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute<String>(
-            //     builder: (context) => DisplayPictureScreen(imagePath: path),
-            //   ),
-            // );
           } catch (e) {
             print(e);
           }
@@ -82,18 +82,3 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 }
 
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
-    );
-  }
-}

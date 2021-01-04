@@ -79,6 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     spinner = true;
                   });
                   try {
+                    //This is an asynchronous firebase call that checks the authentication of the user
+                    //If the user can be successfully authenticated, then they will proceed to the home screen.
                     final returningUser = await _auth.signInWithEmailAndPassword(
                         email: email, password: password);
                     if (returningUser != null) {

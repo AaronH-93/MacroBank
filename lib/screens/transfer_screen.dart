@@ -12,7 +12,8 @@ class TransferScreen extends StatefulWidget {
 
 class _TransferScreenState extends State<TransferScreen> {
   final _controller = TextEditingController();
-  String _selected = 'UK';
+  double _exchanged = 0.0;
+  double _exchangeRate = 0.90;
 
   @override
   Widget build(BuildContext context) {
@@ -45,29 +46,7 @@ class _TransferScreenState extends State<TransferScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    DropdownButton<String>(
-                      value: _selected,
-                      dropdownColor: Colors.deepPurpleAccent,
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      items: <String>['UK', 'German', 'Swiss', 'Danish']
-                          .map((String value) {
-                        return new DropdownMenuItem<String>(
-                          value: value,
-                          child: new Text(
-                            value,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selected = newValue;
-                        });
-                      },
-                    ),
+                    Text('Linked account: UK'),
                     SizedBox(
                       height: 10,
                     ),
@@ -89,10 +68,19 @@ class _TransferScreenState extends State<TransferScreen> {
                                     bottomRight: Radius.zero),
                               ),
                             ),
+                            //These next few lines make it so the keyboard display will be a number pad and only accept digits.
+                            //This is also seen in the alert_dialog_box file with the dialog box classes.
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ],
+                            onChanged: (value){
+                              setState(() {
+                                //This updates the _exchanged variable every time the textfield is changed,
+                                //giving us a real time conversion of the amount being sent.
+                                _exchanged = double.parse(value) * _exchangeRate;
+                              });
+                            },
                           ),
                         ),
                         Material(
@@ -106,6 +94,7 @@ class _TransferScreenState extends State<TransferScreen> {
                             height: 60,
                             onPressed: () {
                               setState(() {
+                                //double.parse(_controller.text) will take what resides in the textfield at the time and convert it to a double
                                 potsData.sendMoney(double.parse(_controller.text));
                               });
                               Navigator.pop(context);
@@ -118,7 +107,16 @@ class _TransferScreenState extends State<TransferScreen> {
                           ),
                         )
                       ],
-                    )
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'They will receive: £$_exchanged',
+                    style: TextStyle(
+                      color: Colors.deepPurpleAccent,
+                      fontSize: 20,
+                    ),),
                   ],
                 ),
               ),
