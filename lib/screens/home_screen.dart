@@ -1,13 +1,16 @@
 import 'dart:io';
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:macro_bank/components/rounded_button.dart';
-import 'package:macro_bank/models/currency_data.dart';
-import 'package:macro_bank/screens/edit_currency_screen.dart';
+import 'package:macro_bank/models/pot_data.dart';
 import 'package:macro_bank/screens/take_picture_screen.dart';
+import 'package:macro_bank/screens/transfer_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:macro_bank/components/alert_dialog_box.dart';
+
+final player = AudioCache();
 
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
@@ -19,10 +22,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<CurrencyData>(
-      builder: (context, currencyData, child) {
-        return Scaffold(
-          body: SafeArea(
+    return Consumer<PotData>(builder: (context, potsData, child) {
+      return Scaffold(
+        backgroundColor: Colors.deepPurple[100],
+        body: Center(
+          child: SafeArea(
             child: Column(
               children: [
                 SizedBox(
@@ -34,19 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     Column(
                       children: [
                         Container(
-                          height: 200,
-                          width: 200,
-                          child: Center(
-                            child: CameraScreen.userHasAvatar ? Image.file(File(CameraScreen.userAvatar)) : Image.asset(CameraScreen.blankAvatar)
-                          ),
+                          height: 120,
+                          width: 120,
+                          child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(100)),
+                              child: CameraScreen.userHasAvatar
+                                  ? Image.file(File(CameraScreen.userAvatar))
+                                  : Image.asset(CameraScreen.blankAvatar)),
                         ),
                         FlatButton(
-                          color: Colors.indigoAccent,
+                          color: Colors.deepPurple[400],
                           onPressed: () {
                             Navigator.pushNamed(context, CameraScreen.id);
                           },
                           child: Text(
-                            'Take Photo',
+                            'Update Photo',
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -57,11 +64,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 Row(
                   children: [
                     Expanded(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Text(
+                              '${potsData.mainPot.currentAmount}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30.0,
+                                color: Colors.deepPurple[400],
+                              ),
+                            ),
+                            Text('${potsData.mainPot.name}'),
+                            RoundedButton(
+                              color: Colors.deepPurple[400],
+                              title: 'Send Money',
+                              onPressed: () {
+                                Navigator.pushNamed(context, TransferScreen.id);
+                                //transfer internationally?
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: Material(
+                      elevation: 5,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                      color: Colors.deepPurpleAccent,
                       child: CarouselSlider(
                         options: CarouselOptions(
                           autoPlay: false,
@@ -69,63 +109,126 @@ class _HomeScreenState extends State<HomeScreen> {
                           enlargeCenterPage: true,
                           enableInfiniteScroll: false,
                         ),
-                        items: currencyData.userCurrencies.map((item) =>
-                            Container(
-                              child: Column(
+                        items: potsData.pots
+                            .map(
+                              (item) => Column(
                                 children: [
-                                  Text(item.name.toString()),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      FlatButton.icon(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () {
+                                          setState(() {
+                                            _showEditPotDialog(item.name);
+                                          });
+                                        },
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                        ),
+                                        label: Text(''),
+                                      ),
+                                      Text(
+                                        item.name.toString(),
+                                        style: TextStyle(
+                                            fontSize: 30.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      FlatButton.icon(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () {
+                                          setState(() {
+                                            potsData.deletePot(item.name);
+                                          });
+                                        },
+                                        icon: Icon(
+                                          Icons.clear,
+                                          color: Colors.white,
+                                        ),
+                                        label: Text(''),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(item.currentAmount.toString(), style: TextStyle(color: Colors.white, fontSize: 20),),
                                   Expanded(
-                                      child: Container(
-                                          height: 200,
-                                          width: 200,
-                                          child: Image.asset(
-                                              item.imageLoc.toString()))),
-                                  Text(item.currentAmount.toString()),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        FlatButton.icon(
+                                          onPressed: () {
+                                            setState(() {
+                                              potsData
+                                                  .transferToMainPot(item.name);
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove,
+                                            color: Colors.white,
+                                          ),
+                                          label: Text(''),
+                                        ),
+                                        FlatButton.icon(
+                                          onPressed: () {
+                                            setState(() {
+                                              _showTransferDialog(item.name);
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          ),
+                                          label: Text(''),
+                                        ),
+
+                                      ],
+                                    ),
+                                  ),
                                   RoundedButton(
-                                    color: Colors.indigoAccent,
-                                    title: 'Transfer',
+                                    color: Colors.deepPurple[300],
+                                    title: 'Add Pot',
                                     onPressed: () {
                                       setState(() {
-                                        _showTransferDialog(
-                                            item.name, item.exchangeRate);
+                                        _showAddPotDialog();
                                       });
                                     },
                                   ),
                                 ],
                               ),
-                            ),
-                        ).toList(),
+                            )
+                            .toList(),
                       ),
                     ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RoundedButton(
-                      color: Colors.indigoAccent,
-                      title: 'Edit Currencies',
-                      onPressed: () {
-                        Navigator.pushNamed(context, EditCurrencyScreen.id);
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
           ),
-        );
-      }
+        ),
+      );
+    });
+  }
+
+  _showTransferDialog(String potName) async {
+    await showDialog<String>(
+      context: context,
+      child: TransferDialogBox(potName: potName, context: context),
     );
   }
 
-
-  _showTransferDialog(String currencyName, double exchangeRate) async {
+  _showAddPotDialog() async {
     await showDialog<String>(
       context: context,
-      child: TransferDialogBox(currencyName: currencyName, exchangeRate: exchangeRate, context: context),
+      child: AddPotDialogBox(context: context),
+    );
+  }
+
+  _showEditPotDialog(String potName) async {
+    await showDialog<String>(
+      context: context,
+      child: EditPotDialogBox(potName: potName, context: context),
     );
   }
 }
-
-
