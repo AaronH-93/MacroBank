@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.deepPurple[100],
       body: ModalProgressHUD(
         inAsyncCall: spinner,
         child: Padding(
@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepPurpleAccent,
+                    color: Colors.deepPurple[400],
                   ),
                 ),
               ),
@@ -44,9 +44,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 48.0,
               ),
               TextField(
+                  textAlign: TextAlign.center,
                   onChanged: (value) {
                     email = value;
                   },
+                  style: TextStyle(color: Colors.white),
                   decoration: kTextFieldDecoration.copyWith(
                     hintStyle: TextStyle(color: Colors.white),
                   )
@@ -56,9 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextField(
                 obscureText: true,
+                textAlign: TextAlign.center,
                 onChanged: (value) {
                   password = value;
                 },
+                style: TextStyle(color: Colors.white),
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your password',
                   hintStyle: TextStyle(color: Colors.white),
@@ -68,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 24.0,
               ),
               RoundedButton(
-                color: Colors.deepPurpleAccent,
+                color: Colors.deepPurple[400],
                 title: 'Log in',
                 onPressed: () async {
                   setState(() {
