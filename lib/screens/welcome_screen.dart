@@ -5,16 +5,14 @@ import 'login_screen.dart';
 import 'registration_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  //id is used by the navigator to determine the page its routing to
   static final String id = 'welcome_screen';
 
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen>
-    with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation animation;
+class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +28,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Center(
+                  //TypeWriterAnimatedTextKit is part of the animated_text_kit package
+                  //and lets me animate the logo in the welcome screen
                   child: TypewriterAnimatedTextKit(
                     speed: Duration(milliseconds: 300),
                     text: ['MacroBank'],

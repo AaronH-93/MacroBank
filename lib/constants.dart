@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Constants used so I don't have to repeat code so much.
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter your email',
   filled: true,

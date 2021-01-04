@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//This is a custom made class that returns a button with rounded edges
+
 class RoundedButton extends StatelessWidget {
   final Color color;
   final String title;

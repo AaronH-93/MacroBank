@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    //Consumer lets us access the PotData class and listens for changes in the state so it can update the app.
     return Consumer<PotData>(builder: (context, potsData, child) {
       return Scaffold(
         backgroundColor: Colors.deepPurple[100],
@@ -29,9 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SafeArea(
             child: Column(
               children: [
+                //Sized Boxes are used for spacing.
                 SizedBox(
                   height: 10.0,
                 ),
+                //This row contains the avatar and update photo button, rows and columns can be wrapped
+                //each other to provide desired design.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -41,8 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 120,
                           width: 120,
                           child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(100)),
+                            //ClipRRect and borderRadius give us the circular avatar
+                              borderRadius: BorderRadius.all(Radius.circular(100)),
+                              //the avatar displayed is dependent on the ternary operator
+                              //if userHasAvatar is true, it will display the avatar
+                              //else it will return a blank avatar image.
                               child: CameraScreen.userHasAvatar
                                   ? Image.file(File(CameraScreen.userAvatar))
                                   : Image.asset(CameraScreen.blankAvatar)),
@@ -50,6 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         FlatButton(
                           color: Colors.deepPurple[400],
                           onPressed: () {
+                            //When user taps "update photo" it takes them to the camera screen
+                            //so they can take a picture.
                             Navigator.pushNamed(context, CameraScreen.id);
                           },
                           child: Text(
@@ -73,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: [
                             Text(
+                              //displays the amount in the user's current account
                               '${potsData.mainPot.currentAmount}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -81,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Text('${potsData.mainPot.name}'),
+                            //Tapping the send money button takes the user to the transfer_screen.
                             RoundedButton(
                               color: Colors.deepPurple[400],
                               title: 'Send Money',
@@ -98,10 +109,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                    //Wrapping these elements in a Material widget lets us use the borderRadius, elevation and color
+                    //fields for editing the design of the page.
                     child: Material(
                       elevation: 5,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                       color: Colors.deepPurpleAccent,
+                      //CarouselSlider is part of the carousel_slider package and its what gives us the
+                      //special animated horizontal scrollview the pots are contained in.
+                      //Essentially, for every item in the pots collection, it builds a column widget with information relevant to that item.
                       child: CarouselSlider(
                         options: CarouselOptions(
                           autoPlay: false,
@@ -211,6 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  //Series of functions that return specific dialog boxes used for different parts of the app.
   _showTransferDialog(String potName) async {
     await showDialog<String>(
       context: context,

@@ -3,6 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:macro_bank/models/pot_data.dart';
 import 'package:provider/provider.dart';
 
+//This file contains a number alert dialog box classes used for the app.
+//The TextEditingController in each class lets us pull the text from the text field for use in functions
+//The dialog boxes are used for getting inputs for sending money and editing and adding money to the users pots.
+
 class TransferDialogBox extends StatefulWidget {
   final String potName;
   final BuildContext context;
